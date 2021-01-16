@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.unity.render-pipelines.universal": "file:Packages/com.unity.render-pipelines.universal@7.4.3",
     "com.unity.2d.animation": "3.2.2",
     "com.unity.2d.pixel-perfect": "2.0.4",
     "com.unity.2d.psdimporter": "2.1.4",

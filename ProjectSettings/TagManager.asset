@@ -13,7 +13,7 @@ TagManager:
   - UI
   - 
   - 
-  - FOV
+  - LineOfSight
   - 
   - 
   - 
@@ -41,9 +41,9 @@ TagManager:
   - name: Base
     uniqueID: 1253665823
     locked: 0
+  - name: LineOfSight
+    uniqueID: 1090847921
+    locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: FogOfWar
-    uniqueID: 1090847921
     locked: 0

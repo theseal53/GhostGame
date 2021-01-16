@@ -11,21 +11,26 @@ public class Doorway
     public Room room;
     public Corridor corridor;
 
-    public bool exit;
+    //Doorways will always expand in the positive X or Y directions
+    public int breadth;
 
-    public Doorway(int x, int y, Direction roomOutDirection, bool exit = false)
+    public bool isMapExit;
+
+    public Doorway(int x, int y, Direction roomOutDirection, int breadth = Constants.DEFAULT_DOOR_BREADTH, bool isMapExit = false)
 	{
         this.x = x;
         this.y = y;
         this.roomOutDirection = roomOutDirection;
-        this.exit = exit;
+        this.breadth = breadth;
+        this.isMapExit = isMapExit;
 	}
 
-    public Doorway(int x, int y, Direction roomOutDirection, Room room, Corridor corridor)
+    public Doorway(int x, int y, Direction roomOutDirection, Room room, Corridor corridor, int breadth = Constants.DEFAULT_DOOR_BREADTH)
     {
         this.x = x;
         this.y = y;
         this.roomOutDirection = roomOutDirection;
+        this.breadth = breadth;
         this.room = room;
         this.corridor = corridor;
     }

@@ -11,14 +11,15 @@ public class Corridor
 	public Doorway door1;
 	public Doorway door2;
 	public int length;
+	public int breadth;
 	public int id;
 
-	public IntRange lengthRange = new IntRange(3, 5);
+	public IntRange lengthRange = new IntRange(0, 5);
 
-	public void SetupCorridor (Doorway doorway, Board board, int corridorId)
+	public void SetupCorridor(Doorway doorway, Board board, int corridorId, int breadth = Constants.DEFAULT_DOOR_BREADTH)
 	{
 		door1 = doorway;
-
+		this.breadth = breadth;
 		id = corridorId;
 
 		length = lengthRange.Random;
@@ -28,16 +29,16 @@ public class Corridor
 		switch (doorway.roomOutDirection)
 		{
 			case Direction.North:
-				door2 = new Doorway(door1.x, door1.y + length + 1, Direction.South);
+				door2 = new Doorway(door1.x, door1.y + length + 1, Direction.South, breadth);
 				break;
 			case Direction.East:
-				door2 = new Doorway(door1.x + length + 1, door1.y, Direction.West);
+				door2 = new Doorway(door1.x + length + 1, door1.y, Direction.West, breadth);
 				break;
 			case Direction.South:
-				door2 = new Doorway(door1.x, door1.y - length - 1, Direction.North);
+				door2 = new Doorway(door1.x, door1.y - length - 1, Direction.North, breadth);
 				break;
 			case Direction.West:
-				door2 = new Doorway(door1.x - length - 1, door1.y, Direction.East);
+				door2 = new Doorway(door1.x - length - 1, door1.y, Direction.East, breadth);
 				break;
 		}
 	}
@@ -67,12 +68,18 @@ public class Corridor
 
 		while (currentX != door2.x)
 		{
-			tiles[currentY][currentX] = id;
+			for (int i = 0; i < breadth; i++)
+			{
+				tiles[currentY+i][currentX] = id;
+			}
 			currentX += stepX;
 		}
 		while (currentY != door2.y)
 		{
-			tiles[currentY][currentX] = id;
+			for (int i = 0; i < breadth; i++)
+			{
+				tiles[currentY][currentX+i] = id;
+			}
 			currentY += stepY;
 		}
 	}

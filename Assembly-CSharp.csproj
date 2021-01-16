@@ -63,12 +63,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\GhostGame\Modified Package Backup\ShadowCaster2D.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Camera\CameraFollow.cs" />
-    <Compile Include="Assets\GhostGame\Scripts\Camera\FieldOfView.cs" />
-    <Compile Include="Assets\GhostGame\Scripts\Camera\FieldOfViewRenderer.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Entity.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Furniture\ItemContainer.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Entities\Furniture\Lights\ElectricLamp.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Entities\Furniture\Lights\ElectricNode.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Furniture\Lights\GameLight.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Items\Crucifix.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Items\Item.cs" />
@@ -78,7 +77,7 @@
     <Compile Include="Assets\GhostGame\Scripts\Entities\Mobs\Ghost\GhostSummonConditions\TimeoutSummonCondition.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Mobs\Mob.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Game Control\EventHub.cs" />
-    <Compile Include="Assets\GhostGame\Scripts\GameManager.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Game Control\GameManager.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\BoardDataGenerator.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\BoardPopulator.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\Ghost\GhostGenerator.cs" />
@@ -86,18 +85,24 @@
     <Compile Include="Assets\GhostGame\Scripts\Generation\Spaces\Board.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\Spaces\Corridor.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\Spaces\Doorway.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Generation\Spaces\Rooms\Bathroom.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Generation\Spaces\Rooms\DiningRoom.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Generation\Spaces\Rooms\Library.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\Spaces\Rooms\Room.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\Spaces\Rooms\StartingRoom.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\TileInstantiator.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\TilePositionParser.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Generation\Tilesets\BathroomTileset.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Generation\Tilesets\DiningRoomTileset.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Generation\Tilesets\LibraryTileset.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\Tilesets\StartingRoomTileSet.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\Tilesets\Test1TileSet.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\Tilesets\TileSet.cs" />
-    <Compile Include="Assets\GhostGame\Scripts\Generation\Tilesets\TileSetRegistry.cs" />
-    <Compile Include="Assets\GhostGame\Scripts\PrefabRegistry.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Global\Constants.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Global\PrefabRegistry.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Global\TileSetRegistry.cs" />
     <Compile Include="Assets\GhostGame\Scripts\UI\UIUpdater.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Util\ArrayPrinter.cs" />
-    <Compile Include="Assets\GhostGame\Scripts\Util\Constants.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Util\Direction.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Util\IntRange.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Util\SetTilemapShadows.cs" />
@@ -108,6 +113,7 @@
     <None Include="Assets\Mirror\Readme.txt" />
     <None Include="Assets\GhostGame\Shaders\FogOfWar.shader" />
     <None Include="Assets\Mirror\Notice.txt" />
+    <None Include="Assets\GhostGame\Shaders\LineOfSight.shader" />
     <None Include="Assets\Mirror\Plugins\Mono.Cecil\License.txt" />
     <None Include="Assets\test.txt" />
     <Reference Include="UnityEngine">

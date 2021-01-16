@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/GhostGame/Scenes/SampleScene.unity
+- path: Assets/GhostGame/Scenes/PlayScene.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0

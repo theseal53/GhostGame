@@ -17,6 +17,7 @@ public class Board
     public TilePosition[][] tilePositions;
 
     public int roomMargin;
+    public int boardMargin;
 
     public Board(int columns, int rows)
 	{

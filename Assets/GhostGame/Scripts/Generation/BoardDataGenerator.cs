@@ -6,10 +6,11 @@ public class BoardDataGenerator
 {
     public int columns = 50;
     public int rows = 50;
-    public IntRange numRooms = new IntRange(10,10);
+    public IntRange numRooms = new IntRange(5, 5);
     public IntRange corridorLength = new IntRange(3, 5);
 
     private int startingDoorwayMargin = 2;
+    private int startingRoomCorridorBreadth = 3;
     private int roomMargin = 1;
 
     TilePositionParser tilePositionParser;
@@ -17,6 +18,8 @@ public class BoardDataGenerator
     int failedRoomsAllowed = 100;
 
     public Board board;
+
+    List<int> roomRngIdentifiers = new List<int>();
 
     // Start is called before the first frame update
     public Board GenerateBoardData()
@@ -39,16 +42,13 @@ public class BoardDataGenerator
         board.rooms.Add(board.startingRoom);
         Doorway startingDoorway = GenerateStartingDoorway();
 
+        InitRngIdentifiers(roomsToGenerate);
+
         //Make and shuffle room ids
-        List<int> roomIds = new List<int>();
-        for (int i = 1; i < roomsToGenerate; i++)
-        {
-            roomIds.Insert(Random.Range(0, i), i);
-        }
 
         board.rooms[0].SetupRoom(board, startingDoorway, 0);
 
-        for (int i = 0; i < roomsToGenerate-1; i++)
+        for (int i = 1; i < roomsToGenerate; i++)
         {
             if (failedRoomAttempts >= failedRoomsAllowed)
 			{
@@ -56,21 +56,31 @@ public class BoardDataGenerator
                 break;
 			}
             Room stemRoom = SelectStemRoom();
-            Doorway possibleDoorway = stemRoom.PossibleDoorway();
+            if (stemRoom.CanMakeMoreDoors())
+            {
+                Doorway possibleDoorway = stemRoom.PossibleDoorway();
 
-            Corridor corridorAttempt = new Corridor();
-            corridorAttempt.SetupCorridor(possibleDoorway, board, 4);
+                Corridor corridorAttempt = new Corridor();
+                corridorAttempt.SetupCorridor(possibleDoorway, board, 0);
 
-            Room roomAttempt = new Room();
-            roomAttempt.SetupRoom(board, corridorAttempt.door2, roomIds[i]);
+                Room roomAttempt = RandomRoom();
+                roomAttempt.SetupRoom(board, corridorAttempt.door2, i);
 
-            bool valid = roomAttempt.TestRoomValidity(board);
+                bool valid = roomAttempt.TestRoomValidity(board);
 
-            //Do testing
-            if (valid) {
-                stemRoom.doorways.Add(possibleDoorway);
-                board.corridors.Add(corridorAttempt);
-                board.rooms.Add(roomAttempt);
+                //Do testing
+                if (valid)
+                {
+                    stemRoom.doorways.Add(possibleDoorway);
+                    board.corridors.Add(corridorAttempt);
+                    board.rooms.Add(roomAttempt);
+                    roomRngIdentifiers.RemoveAt(0);
+                }
+                else
+                {
+                    i--;
+                    failedRoomAttempts++;
+                }
             } else
 			{
                 i--;
@@ -79,19 +89,44 @@ public class BoardDataGenerator
         }
     }
 
+    private void InitRngIdentifiers(int roomsToGenerate)
+	{
+        //Go to roomsToGenerate - 1, because we already are making the starting room
+        for (int i = 0; i < roomsToGenerate - 1; i++)
+        {
+            roomRngIdentifiers.Insert(UnityEngine.Random.Range(0, i), i);
+        }
+    }
+
+    private Room RandomRoom()
+	{
+        int rng = roomRngIdentifiers[0];
+		switch (rng)
+		{
+            case 0:
+                return new Library();
+            case 1:
+                return new DiningRoom();
+            case 2:
+                return new Bathroom();
+            default:
+                return new Room();
+		}
+	}
+
     public Doorway GenerateStartingDoorway()
 	{
-        int rng = Random.Range(0, 4);
+        int rng = UnityEngine.Random.Range(0, 4);
         switch(rng)
 		{
             case 0:
-                return new Doorway(board.columns / 2, startingDoorwayMargin, Direction.South, true);
+                return new Doorway(board.columns / 2, startingDoorwayMargin, Direction.South, Constants.DEFAULT_DOOR_BREADTH, true);
             case 1:
-                return new Doorway(board.columns / 2, board.rows - startingDoorwayMargin, Direction.North, true);
+                return new Doorway(board.columns / 2, board.rows - startingDoorwayMargin, Direction.North, Constants.DEFAULT_DOOR_BREADTH, true);
             case 2:
-                return new Doorway(startingDoorwayMargin, board.rows / 2, Direction.West, true);
+                return new Doorway(startingDoorwayMargin, board.rows / 2, Direction.West, Constants.DEFAULT_DOOR_BREADTH, true);
             default:
-                return new Doorway(board.columns - startingDoorwayMargin, board.rows / 2, Direction.East, true);
+                return new Doorway(board.columns - startingDoorwayMargin, board.rows / 2, Direction.East, Constants.DEFAULT_DOOR_BREADTH, true);
 
         }
 	}
@@ -126,7 +161,7 @@ public class BoardDataGenerator
 
     private Room SelectStemRoom()
 	{
-        return board.rooms[Random.Range(0, board.rooms.Count)];
+        return board.rooms[UnityEngine.Random.Range(0, board.rooms.Count)];
 	}
 
     private void PrintAllRooms()
