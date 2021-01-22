@@ -13,8 +13,7 @@ public class Board
     public List<Room> rooms = new List<Room>();
     public List<Corridor> corridors = new List<Corridor>();
 
-    public int[][] tiles;
-    public TilePosition[][] tilePositions;
+    public short[,] tiles;
 
     public int roomMargin;
     public int boardMargin;
@@ -28,15 +27,13 @@ public class Board
 
     private void SetupTilesArray()
     {
-        tiles = new int[rows][];
-
-        for (int i = 0; i < tiles.Length; ++i)
+        tiles = new short[rows, columns];
+        for (int i = 0; i < tiles.GetLength(0); i++)
         {
-            tiles[i] = new int[columns];
-			for (int j = 0; j < columns; j++)
-			{
-                tiles[i][j] = Constants.EMPTY_CODE;
-			}
+            for (int j = 0; j < tiles.GetLength(1); j++)
+            {
+                tiles[i, j] = Constants.EMPTY_CODE;
+            }
         }
     }
 

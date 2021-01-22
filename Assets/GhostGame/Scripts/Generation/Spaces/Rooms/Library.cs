@@ -3,36 +3,36 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public struct GameObjectDimensionSet
-{
-	public GameObject target;
-	public int breadth;
-	public GameObjectDimensionSet(GameObject target, int breadth)
-	{
-		this.target = target;
-		this.breadth = breadth;
-	}
-} 
-
 public class Library : Room
 {
 	private int bookcaseMargin = 3;
 	private int aisleSpacing = 2;
 
 	LibraryTileset tileSet;
-	public override TileSet TileSet
-	{
-		get
-		{
-			return tileSet;
-		}
-	}
+
+	List<float> outerChances;
+	List<GameObjectDimensionSet> outerChoices;
 
 	public Library() : base()
 	{
+		roomCode = RoomCode.Library;
 		widthRange = new IntRange(16, 30);
 		heightRange = new IntRange(16, 30);
-		tileSet = TileSetRegistry.I.Library;
+		tileSet = (LibraryTileset)TileSet;
+
+		outerChances = new List<float>() {
+			2,
+			4,
+			5,
+			2
+		};
+
+		outerChoices = new List<GameObjectDimensionSet>() {
+			new GameObjectDimensionSet(tileSet.OneByOneObstacle, 1),
+			new GameObjectDimensionSet(tileSet.TwoByTwoObstacle, 2),
+			new GameObjectDimensionSet(null, 1),
+			new GameObjectDimensionSet(null, 2)
+		};
 	}
 
 	public override void GenerateFurniture()
@@ -178,29 +178,11 @@ public class Library : Room
 		}
 	}
 
-	float oneByOneChance = .2f;
-	float twoByTwoChance = .4f;
-	float oneSpaceChance = .7f;
+
 	//Last is two space chance;
 
 	public GameObjectDimensionSet GetRandomOuterGameObject()
 	{
-		float rng = Random.value;
-		if (rng < oneByOneChance)
-		{
-			return new GameObjectDimensionSet(tileSet.OneByOneObstacle, 1);
-		}
-		else if (rng < twoByTwoChance)
-		{
-			return new GameObjectDimensionSet(tileSet.TwoByTwoObstacle, 2);
-		}
-		else if (rng < oneSpaceChance)
-		{
-			return new GameObjectDimensionSet(null, 1);
-		}
-		else
-		{
-			return new GameObjectDimensionSet(null, 2);
-		}
+		return WeightedChoice.Choose<GameObjectDimensionSet>(outerChoices, outerChances);
 	}
 }

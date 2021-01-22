@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Mirror;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,25 +18,45 @@ public class PlayerCharacter : Mob
 
 	public float interactRadius = 2;
 
+	public GameObject visibleLight;
+	public GameObject LineOfSightLight;
+
 	public Item heldItem;
 
 	// Update is called once per frame
+
+	public void BeginPlay()
+	{
+		print("Begin play in playerCharacter");
+		transform.position = GameManager.I.board.startingRoom.StartingPositions()[0];
+		gameObject.SetActive(true);
+	}
+
+
 	void Update()
 	{
-		horizontalMove = Input.GetAxisRaw("Horizontal") * runSpeed;
-		verticalMove = Input.GetAxisRaw("Vertical") * runSpeed;
-
-		interactPressed = Input.GetKeyDown(KeyCode.E);
-		if (interactPressed)
+		if (isClient)
 		{
-			AttemptInteraction();
-		}
+			CmdSetMove(Input.GetAxisRaw("Horizontal") * runSpeed, Input.GetAxisRaw("Vertical") * runSpeed);
+			interactPressed = Input.GetKeyDown(KeyCode.E);
+			if (interactPressed)
+			{
+				CmdAttemptInteraction();
+			}
 
-		itemPressed = Input.GetKeyDown(KeyCode.Q);
-		if (itemPressed)
-		{
-			AttemptItemUse();
+			itemPressed = Input.GetKeyDown(KeyCode.Q);
+			if (itemPressed)
+			{
+				CmdAttemptItemUse();
+			}
 		}
+	}
+
+	[Command]
+	void CmdSetMove(float horizontal, float vertical)
+	{
+		horizontalMove = horizontal;
+		verticalMove = vertical;
 	}
 
 	void FixedUpdate()
@@ -46,7 +67,8 @@ public class PlayerCharacter : Mob
 
 	}
 
-	void AttemptInteraction()
+	[Command]
+	void CmdAttemptInteraction()
 	{
 		Collider2D[] proximityObjects = Physics2D.OverlapCircleAll(transform.position, interactRadius);
 		HashSet<Entity> availableEntities = new HashSet<Entity>();
@@ -77,6 +99,7 @@ public class PlayerCharacter : Mob
 		return availableEntities.First();
 	}
 
+
 	public void PickupItem(Item item)
 	{
 		item.gameObject.transform.parent = gameObject.transform;
@@ -95,7 +118,8 @@ public class PlayerCharacter : Mob
 		}
 	}
 
-	public void AttemptItemUse()
+	[Command]
+	public void CmdAttemptItemUse()
 	{
 		if (heldItem != null)
 		{

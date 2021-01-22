@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Mirror;
+using System;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     private static GameManager i;
 
@@ -16,56 +18,90 @@ public class GameManager : MonoBehaviour
 	}
 
     BoardDataGenerator boardDataGenerator;
+    TilePositionParser tilePositionParser;
     TileInstantiator tileInstantiator;
     BoardPopulator boardPopulator;
     GhostGenerator ghostGenerator;
 
-    Board board;
+    public Board board;
+    public int columns = 100;
+    public int rows = 100;
 
-    public GameObject playerPrefab;
-    public GameObject player;
+    public List<PlayerCharacter> players = new List<PlayerCharacter>();
 
     public CameraFollow mainCameraFollow;
 
     public TimerManager gameTimerManager;
     public Timer gameTimer;
 
-    // Start is called before the first frame update
-    void Start()
-    {
+    public List<GameObject> clientOnlyObjects;
+
+
+    public GameManager() : base()
+	{
         i = this;
+	}
 
-        gameTimerManager = gameObject.AddComponent<TimerManager>();
-        gameTimer = new Timer(60, gameTimerManager);
-        gameTimer.Start();
+    //Server do this
+	public void Awake()
+    {
+        //gameTimerManager = gameObject.AddComponent<TimerManager>();
+        //gameTimer = new Timer(60, gameTimerManager);
+        //gameTimer.Start();
+    }
 
+    public void GenerateBoard()
+    {
+        print("GenerateBoard");
         boardDataGenerator = new BoardDataGenerator();
-        board = boardDataGenerator.GenerateBoardData();
-
-        tileInstantiator = new TileInstantiator();
-        tileInstantiator.InstantiateTiles(board);
+        board = boardDataGenerator.GenerateBoardData(columns, rows);
 
         boardPopulator = new BoardPopulator();
         boardPopulator.PopulateBoard(board);
 
-        player = Instantiate(playerPrefab);
-        player.transform.position = board.startingRoom.StartingPositions()[0];
-
         ghostGenerator = new GhostGenerator();
         ghostGenerator.GenerateGhost(board);
-
-        mainCameraFollow.target = player;
-
-        //ArrayPrinter.Print2DArray(board.tiles, "Assets/test.txt");
     }
 
-	private void Update()
+
+
+
+    /*public void RpcSpawnTiles(short[] rawTiles)
+    {
+        Debug.Log("Entered spawn tiles");
+        short[,] tiles = ArrayPrinter.To2DArray(rawTiles, rows, columns);
+        tilePositionParser = new TilePositionParser();
+        TilePosition[,] tilePositions = tilePositionParser.Parse(tiles);
+
+        tileInstantiator = new TileInstantiator();
+        tileInstantiator.InstantiateTiles(tiles, tilePositions);
+    }*/
+
+    /*public override void OnStartClient()
 	{
-        //TileSetRegistry.I.wallTilemap.GetComponent<SetTilemapShadows>().AddShadows();
+		base.OnStartClient();
+        foreach (GameObject target in clientOnlyObjects)
+        {
+            target.SetActive(true);
+        }
     }
 
-    private void FixedUpdate()
+    public void AddPlayer(PlayerCharacter player)
+	{
+        players.Add(player);
+	}
+
+    public void BeginPlay()
+	{
+        print("Begin play in GameManager");
+        foreach(PlayerCharacter player in players)
+		{
+            player.BeginPlay();
+		}
+	}*/
+
+    /*private void FixedUpdate()
 	{
         EventHub.GameTimeChangeBroadcast(gameTimer.TimeRemaining);
-	}
+	}*/
 }

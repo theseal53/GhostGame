@@ -5,22 +5,23 @@ using UnityEngine.Tilemaps;
 
 public class TileInstantiator
 {
-    public void InstantiateTiles(Board board)
+    public void InstantiateTiles(short[,] tiles, TilePosition[,] tilePositions)
     {
 
-        for (int i = 0; i < board.tilePositions.Length; ++i)
+        for (int i = 0; i < tilePositions.GetLength(0); ++i)
         {
-            for (int j = 0; j < board.tilePositions[i].Length; j++)
+            for (int j = 0; j < tilePositions.GetLength(1); j++)
             {
-                if (board.tilePositions[i][j] == TilePosition.Wall)
+                if (tilePositions[i,j] == TilePosition.Wall)
 				{
                     InstantiateWall(j, i);
 				}
-                else if (board.tilePositions[i][j] != TilePosition.Empty)
+                else if (tilePositions[i,j] != TilePosition.Empty)
                 {
-                    Room room = board.rooms[board.tiles[i][j]];
-                    TileSet tileSet = room.TileSet;
-                    Tile[] positionalSet = tileSet.getPositionalSet(board.tilePositions[i][j]);
+                    //Room room = board.rooms[board.tiles[i][j]];
+                    //TileSet tileSet = room.TileSet;
+                    TileSet tileSet = TileSetRegistry.I.GetTileSet((RoomCode)tiles[i,j]);
+                    Tile[] positionalSet = tileSet.getPositionalSet(tilePositions[i,j]);
                     InstantiateFromArray(positionalSet, j, i);
                 }
             }

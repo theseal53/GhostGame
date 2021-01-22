@@ -12,11 +12,11 @@ public class Corridor
 	public Doorway door2;
 	public int length;
 	public int breadth;
-	public int id;
+	public short id;
 
 	public IntRange lengthRange = new IntRange(0, 5);
 
-	public void SetupCorridor(Doorway doorway, Board board, int corridorId, int breadth = Constants.DEFAULT_DOOR_BREADTH)
+	public void SetupCorridor(Doorway doorway, Board board, short corridorId, int breadth = Constants.DEFAULT_DOOR_BREADTH)
 	{
 		door1 = doorway;
 		this.breadth = breadth;
@@ -41,9 +41,10 @@ public class Corridor
 				door2 = new Doorway(door1.x - length - 1, door1.y, Direction.East, breadth);
 				break;
 		}
+		door2.corridor = this;
 	}
 
-	public void PrintToTilesArray(int[][] tiles)
+	public void PrintToTilesArray(short[,] tiles)
 	{
 		int stepX = 0;
 		if (door2.x > door1.x)
@@ -70,7 +71,7 @@ public class Corridor
 		{
 			for (int i = 0; i < breadth; i++)
 			{
-				tiles[currentY+i][currentX] = id;
+				tiles[currentY+i,currentX] = id;
 			}
 			currentX += stepX;
 		}
@@ -78,7 +79,7 @@ public class Corridor
 		{
 			for (int i = 0; i < breadth; i++)
 			{
-				tiles[currentY][currentX+i] = id;
+				tiles[currentY,currentX+i] = id;
 			}
 			currentY += stepY;
 		}

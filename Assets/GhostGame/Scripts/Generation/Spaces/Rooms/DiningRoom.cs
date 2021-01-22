@@ -16,23 +16,15 @@ public class DiningRoom : Room
 
 	bool vertical;
 
-	
-
 	DiningRoomTileset tileSet;
-	public override TileSet TileSet
-	{
-		get
-		{
-			return tileSet;
-		}
-	}
 
 	public DiningRoom() : base()
 	{
+		roomCode = RoomCode.DiningRoom;
 		diningTableBreadth = diningTableBreadthRange.Random;
 		diningTableLength = diningTableLengthRange.Random;
 		diningTableMargin = diningTableMarginRange.Random;
-		tileSet = TileSetRegistry.I.DiningRoom;
+		tileSet = (DiningRoomTileset)TileSet;
 	}
 
 	protected override void SetRoomDimensions()
@@ -52,11 +44,6 @@ public class DiningRoom : Room
 		widthRange.m_Max = width;
 		heightRange.m_Min = height;
 		heightRange.m_Max = height;
-	}
-
-	public override void SetupRoom(Board board, Doorway doorway, int roomId)
-	{
-		base.SetupRoom(board, doorway, roomId);
 	}
 
 	public override void GenerateFurniture()
@@ -87,10 +74,10 @@ public class DiningRoom : Room
 		{
 			for (int yPos = y + diningTableMargin + 1; yPos < y + height - diningTableMargin - 1; yPos++)
 			{
-				TileSetRegistry.I.floorTilemap.SetTile(new Vector3Int(xPos, yPos, 0), tileSet.diningTableTopCenter);
+				TileSetRegistry.I.floorTilemap.SetTile(new Vector3Int(xPos, yPos, 0), tileSet.diningTableMidCenter);
 			}
 		}
-		GameObject gameObject = new GameObject();
+		GameObject gameObject = new GameObject("Dining table collider");
 		gameObject.transform.position = new Vector2(x + width / 2f - .5f, y + height / 2f - .5f);
 		BoxCollider2D collider = gameObject.AddComponent<BoxCollider2D>();
 		if (vertical)

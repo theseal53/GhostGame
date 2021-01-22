@@ -29,13 +29,44 @@ public class TileSetRegistry : MonoBehaviour
 	public Tilemap floorTilemap;
 	public Tilemap wallTilemap;
 
-	public TileSet Test1;
-	public TileSet Test2;
-	public TileSet Test3;
-	public TileSet Test4;
 
-	public StartingRoomTileSet StartingRoom;
-	public LibraryTileset Library;
-	public DiningRoomTileset DiningRoom;
-	public BathroomTileset Bathroom;
+	[SerializeField] private TileSet Test1;
+	[SerializeField] private TileSet Test2;
+	[SerializeField] private TileSet Test3;
+	[SerializeField] private TileSet Test4;
+
+	[SerializeField] private StartingRoomTileSet StartingRoom;
+	[SerializeField] private LibraryTileset Library;
+	[SerializeField] private DiningRoomTileset DiningRoom;
+	[SerializeField] private BathroomTileset Bathroom;
+	[SerializeField] private KitchenTileset Kitchen;
+
+	public TileSet GetTileSet(RoomCode code)
+	{
+		switch (code)
+		{
+			case RoomCode.Test1:
+				return Test1;
+			case RoomCode.Test2:
+				return Test2;
+			case RoomCode.Test3:
+				return Test3;
+			case RoomCode.Test4:
+				return Test4;
+
+			case RoomCode.StartingRoom:
+				return StartingRoom;
+			case RoomCode.Library:
+				return Library;
+			case RoomCode.DiningRoom:
+				return DiningRoom;
+			case RoomCode.Bathroom:
+				return Bathroom;
+			case RoomCode.Kitchen:
+				return Kitchen;
+
+			default:
+				return Test1;
+		}
+	}
 }

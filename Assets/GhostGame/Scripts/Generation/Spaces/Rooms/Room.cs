@@ -10,7 +10,7 @@ public class Room
 	public int y;
 	public int width;
 	public int height;
-	public int id;
+	public RoomCode roomCode = RoomCode.Test1;
 
 	public List<Room> adjacentRooms = new List<Room>();
 	public List<Doorway> doorways = new List<Doorway>();
@@ -25,14 +25,13 @@ public class Room
 	{
 		get
 		{
-			return TileSetRegistry.I.Test1;
+			return TileSetRegistry.I.GetTileSet(roomCode);
 		}
 	}
 
-	public virtual void SetupRoom(Board board, Doorway doorway, int roomId)
+	public virtual void SetupRoom(Board board, Doorway doorway)
 	{
 		SetRoomDimensions();
-		id = roomId;
 
 		switch (doorway.roomOutDirection)
 		{
@@ -119,7 +118,7 @@ public class Room
 		return (Direction)smallest[Random.Range(0, smallest.Count)];
 	}
 
-	public void PrintToTilesArray(int[][] tiles)
+	public virtual void PrintToTilesArray(short[,] tiles)
 	{
 		for (int j = 0; j < width; j++)
 		{
@@ -128,62 +127,196 @@ public class Room
 			for (int k = 0; k < height; k++)
 			{
 				int yCoord = y + k;
-				tiles[yCoord][xCoord] = id;
+				tiles[yCoord, xCoord] = (short)roomCode;
 			}
+		}
+	}
+
+	delegate void MoveFunction(Room target);
+	class MovePair : System.IComparable
+	{
+		public int distance;
+		public MoveFunction action;
+		public MovePair(int distance, MoveFunction action)
+		{
+			this.distance = distance;
+			this.action = action;
+		}
+
+		public int CompareTo(object obj)
+		{
+			MovePair other = (MovePair)obj;
+			if (distance > other.distance)
+				return 1;
+			if (distance < other.distance)
+				return -1;
+			return 0;
 		}
 	}
 
 	public bool TestRoomValidity(Board board)
 	{
-		bool fitsRoomSpecs = CheckRoomSpecs();
-		if (!fitsRoomSpecs)
-			return false;
+		int margin = Constants.ROOM_MARGIN;
 
-		bool outOfBounds = CheckOutOfBounds(board);
-		if (outOfBounds)
-			return false;
+		bool movedNorth = false;
+		bool movedSouth = false;
+		bool movedEast = false;
+		bool movedWest = false;
 
-		bool intersecting = IntersectingOtherRooms(board);
-		if (intersecting)
-			return false;
+		if (x < board.boardMargin)
+			x = board.boardMargin; movedEast = true;
+		if (y < board.boardMargin)
+			y = board.boardMargin; movedNorth = true;
+		if (x + width > board.columns - board.boardMargin)
+			x = board.columns - board.roomMargin - width; movedWest = true;
+		if (y + height > board.rows - board.boardMargin)
+			y = board.rows - board.boardMargin - height; movedSouth = true;
 
-		return true;
-	}
+		bool moved = false;
 
-	private bool CheckRoomSpecs()
-	{
-		if (width >= widthRange.m_Min &&
-			width <= widthRange.m_Max &&
-			height >= heightRange.m_Min &&
-			height <= heightRange.m_Max)
-			return true;
-		return false;
-	}
+		int northFreedom = 0;
+		int southFreedom = 0;
+		int eastFreedom = 0;
+		int westFreedom = 0;
 
-	private bool CheckOutOfBounds(Board board)
-	{
-		if (x < board.roomMargin ||
-			y < board.roomMargin ||
-			x + width > board.columns - board.roomMargin ||
-			y + height > board.rows - board.roomMargin)
-		{
-			return true;
-		}
-		return false;
-	}
+		GetDoorwayFreedoms(ref northFreedom, ref southFreedom, ref eastFreedom, ref westFreedom);
 
-	private bool IntersectingOtherRooms(Board board)
-	{
+		MovePair moveEast = new MovePair(0, delegate (Room target) {
+			if (!movedWest)
+			{
+				int desiredX = target.x + target.width + margin;
+				int difference = desiredX - x;
+				if (difference <= eastFreedom && desiredX + width <= board.columns - board.boardMargin)
+				{
+					eastFreedom -= difference;
+					westFreedom += difference;
+					movedEast = true;
+					moved = true;
+					x = desiredX;
+				}
+			}
+		});
+		MovePair moveWest = new MovePair(0, delegate (Room target) {
+			if (!movedEast)
+			{
+				int desiredX = target.x - width - margin;
+				int difference = x - desiredX;
+				if (difference <= eastFreedom && desiredX >= board.boardMargin)
+				{
+					westFreedom -= difference;
+					eastFreedom += difference;
+					movedEast = true;
+					moved = true;
+					x = desiredX;
+				}
+			}
+		});
+		MovePair moveNorth = new MovePair(0, delegate (Room target) {
+			if (!movedSouth)
+			{
+				int desiredY = target.y + target.height + margin;
+				int difference = desiredY - y;
+				if (difference <= northFreedom && desiredY + height <= board.rows - margin)
+				{
+					eastFreedom -= difference;
+					westFreedom += difference;
+					movedNorth = true;
+					moved = true;
+					y = desiredY;
+				}
+			}
+		});
+		MovePair moveSouth = new MovePair(0, delegate (Room target) {
+			if (!movedNorth)
+			{
+				int desiredY = target.y - height - margin;
+				int difference = y - desiredY;
+				if (difference <= southFreedom && desiredY <= board.boardMargin)
+				{
+					westFreedom -= difference;
+					eastFreedom += difference;
+					movedSouth = true;
+					moved = true;
+					y = desiredY;
+				}
+			}
+		});
+		List<MovePair> options = new List<MovePair>() { moveEast, moveWest, moveNorth, moveSouth };
+
+		List<Room> collisionRooms = new List<Room>(board.rooms);
+
 		Rect rect = new Rect(x - margin, y - margin, width + margin, height + margin);
-		foreach (Room room in board.rooms)
+
+		for (int i = 0; i < collisionRooms.Count; i++)
 		{
+			Room room = collisionRooms[i];
 			Rect otherRect = new Rect(room.x - room.margin, room.y - room.margin, room.width + room.margin, room.height + room.margin);
 			if (rect.Overlaps(otherRect))
 			{
-				return true;
+				moved = false;
+
+				moveEast.distance = x + width + margin - room.x;
+				moveWest.distance = room.x + room.width + margin - x;
+				moveNorth.distance = y + height + margin - room.y;
+				moveSouth.distance = room.y + room.height + margin - y;
+
+				options.Sort();
+				foreach(MovePair movePair in options)
+				{
+					if (movePair.distance > 0)
+					{
+						movePair.action(room);
+						if (moved)
+							Debug.Log("Moved something!");
+						if (moved)
+							break;
+					}
+				}
+
+				if (!moved)
+				{
+					return false;
+				}
+				//It won't be able to collide anymore
+				collisionRooms.Remove(room);
+				i = 0;
 			}
 		}
-		return false;
+		return true;
+	}
+
+	private void GetDoorwayFreedoms(ref int northFreedom, ref int southFreedom, ref int eastFreedom, ref int westFreedom)
+	{
+		Doorway door = doorways[0];
+		Corridor corridor = door.corridor;
+		if (door.roomOutDirection == Direction.North)
+		{
+			northFreedom = corridor.length - corridor.lengthRange.m_Min;
+			southFreedom = corridor.lengthRange.m_Max - corridor.length;
+			eastFreedom = door.x - x;
+			westFreedom = x + width - (door.x + door.breadth - 1);
+		}
+		if (door.roomOutDirection == Direction.South)
+		{
+			southFreedom = corridor.length - corridor.lengthRange.m_Min;
+			northFreedom = corridor.lengthRange.m_Max - corridor.length;
+			eastFreedom = door.x - x;
+			westFreedom = x + width - (door.x + door.breadth - 1);
+		}
+		if (door.roomOutDirection == Direction.East)
+		{
+			eastFreedom = corridor.length - corridor.lengthRange.m_Min;
+			westFreedom = corridor.lengthRange.m_Max - corridor.length;
+			northFreedom = door.y - y;
+			southFreedom = y+ height - (door.y + door.breadth - 1);
+		}
+		if (door.roomOutDirection == Direction.South)
+		{
+			westFreedom = corridor.length - corridor.lengthRange.m_Min;
+			eastFreedom = corridor.lengthRange.m_Max - corridor.length;
+			northFreedom = door.y - y;
+			southFreedom = y + height - (door.y + door.breadth - 1);
+		}
 	}
 
 	public virtual void GenerateFurniture()
@@ -202,6 +335,17 @@ public class Room
 		if (!ObstructsDoorway(x, y, width, height))
 		{
 			return Object.Instantiate(prefab, new Vector3(x, y), Quaternion.identity);
+		}
+		else
+		{
+			return null;
+		}
+	}
+	protected GameObject AttemptObjectInstantiation(GameObject prefab, Rect rect)
+	{
+		if (!ObstructsDoorway(rect))
+		{
+			return Object.Instantiate(prefab, new Vector3(rect.x, rect.y), Quaternion.identity);
 		}
 		else
 		{
@@ -240,9 +384,13 @@ public class Room
 	{
 		return true;
 	}
+	public virtual void PostValiditySetup()
+	{
+		//Do nothing
+	}
 
 	public override string ToString()
 	{
-		return "RoomID " + id + " x,y(" + x + "," + y + ") dims(" + width + "," + height + ")";
+		return "RoomID " + roomCode + " x,y(" + x + "," + y + ") dims(" + width + "," + height + ")";
 	}
 }

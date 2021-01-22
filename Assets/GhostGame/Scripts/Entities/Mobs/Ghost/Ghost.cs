@@ -32,5 +32,6 @@ public class Ghost : Mob
 	public void Banish()
 	{
 		print("I am banished!");
+		gameObject.SetActive(false);
 	}
 }

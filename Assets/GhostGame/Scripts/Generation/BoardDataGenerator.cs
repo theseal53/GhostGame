@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class BoardDataGenerator
 {
-    public int columns = 50;
-    public int rows = 50;
-    public IntRange numRooms = new IntRange(5, 5);
+    public IntRange numRooms = new IntRange(10, 10);
     public IntRange corridorLength = new IntRange(3, 5);
 
     private int startingDoorwayMargin = 2;
     private int startingRoomCorridorBreadth = 3;
+    private int boardMargin = 1;
     private int roomMargin = 1;
 
-    TilePositionParser tilePositionParser;
 
     int failedRoomsAllowed = 100;
 
@@ -22,15 +20,14 @@ public class BoardDataGenerator
     List<int> roomRngIdentifiers = new List<int>();
 
     // Start is called before the first frame update
-    public Board GenerateBoardData()
+    public Board GenerateBoardData(int columns, int rows)
     {
         board = new Board(columns, rows);
         board.roomMargin = roomMargin;
-        tilePositionParser = new TilePositionParser();
+        board.boardMargin = boardMargin;
         CreateRoomsAndCorridors();
         SetTilesValuesForRooms();
         SetTilesValuesForCorridors();
-        board.tilePositions = tilePositionParser.Parse(board.tiles);
         return board;
     }
 
@@ -46,7 +43,7 @@ public class BoardDataGenerator
 
         //Make and shuffle room ids
 
-        board.rooms[0].SetupRoom(board, startingDoorway, 0);
+        board.rooms[0].SetupRoom(board, startingDoorway);
 
         for (int i = 1; i < roomsToGenerate; i++)
         {
@@ -64,13 +61,14 @@ public class BoardDataGenerator
                 corridorAttempt.SetupCorridor(possibleDoorway, board, 0);
 
                 Room roomAttempt = RandomRoom();
-                roomAttempt.SetupRoom(board, corridorAttempt.door2, i);
+                roomAttempt.SetupRoom(board, corridorAttempt.door2);
 
                 bool valid = roomAttempt.TestRoomValidity(board);
 
                 //Do testing
                 if (valid)
                 {
+                    roomAttempt.PostValiditySetup();
                     stemRoom.doorways.Add(possibleDoorway);
                     board.corridors.Add(corridorAttempt);
                     board.rooms.Add(roomAttempt);
@@ -109,6 +107,8 @@ public class BoardDataGenerator
                 return new DiningRoom();
             case 2:
                 return new Bathroom();
+            case 3:
+                return new Kitchen();
             default:
                 return new Room();
 		}

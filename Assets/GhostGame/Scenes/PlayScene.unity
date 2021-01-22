@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -164,7 +164,7 @@ Transform:
   - {fileID: 798982060}
   - {fileID: 1079897116}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &153061355
 GameObject:
@@ -192,7 +192,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 153061355}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25, y: 25, z: -10}
+  m_LocalPosition: {x: 50, y: 50, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1982836553}
@@ -256,7 +256,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 25
+  orthographic size: 50
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -404,7 +404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &297150701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -523,8 +523,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 376568527}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25, y: 25, z: 0}
-  m_LocalScale: {x: 50, y: 50, z: 1}
+  m_LocalPosition: {x: 50, y: 50, z: 0}
+  m_LocalScale: {x: 100, y: 100, z: 1}
   m_Children: []
   m_Father: {fileID: 1982836553}
   m_RootOrder: 0
@@ -913,54 +913,6 @@ MonoBehaviour:
   toilet: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f, type: 3}
   wasteBasket: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f,
     type: 3}
---- !u!1 &738595860
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 738595863}
-  - component: {fileID: 738595862}
-  m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &738595862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738595860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6e3cc0fc03e08b468f19f1ab011f016, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 1967847119862364178, guid: 62a175831fd7a924f91c57ba8206d041,
-    type: 3}
-  player: {fileID: 0}
-  mainCameraFollow: {fileID: 519420030}
-  gameTimerManager: {fileID: 0}
---- !u!4 &738595863
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 738595860}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &798982059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1525,7 +1477,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1167668262
 GameObject:
@@ -1623,8 +1575,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 25, y: 25}
-  m_SizeDelta: {x: 50, y: 50}
+  m_AnchoredPosition: {x: 50, y: 50}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1254287144
 GameObject:
@@ -1697,6 +1649,95 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1254287144}
   m_CullTransparentMesh: 0
+--- !u!1 &1473554390
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1473554391}
+  - component: {fileID: 1473554392}
+  m_Layer: 0
+  m_Name: Kitchen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1473554391
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473554390}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1708346326}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1473554392
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473554390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fba92122338ed44e9c39c0392af2c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLeftTiles:
+  - {fileID: 11400000, guid: d903130dceb9d7f409861c8403cbd055, type: 2}
+  topCenterTiles:
+  - {fileID: 11400000, guid: c0c6b7e1393a7a548bc95c684b5b9156, type: 2}
+  topRightTiles:
+  - {fileID: 11400000, guid: dcb85048c1a81654bb40d6c296482609, type: 2}
+  midLeftTiles:
+  - {fileID: 11400000, guid: bfd7029180445e3458e260cf3c14373d, type: 2}
+  midCenterTiles:
+  - {fileID: 11400000, guid: 6f7b53f4d68bf7b45b5fd42d11424f95, type: 2}
+  midRightTiles:
+  - {fileID: 11400000, guid: c02e46d16348c714d9fe1935d20e20b5, type: 2}
+  bottomLeftTiles:
+  - {fileID: 11400000, guid: 26277c12d874a364baae7d411b501780, type: 2}
+  bottomCenterTiles:
+  - {fileID: 11400000, guid: 90715081984b3ca448267ea6c9b158f6, type: 2}
+  bottomRightTiles:
+  - {fileID: 11400000, guid: 146eb26648524584b82860d551761d22, type: 2}
+  verticalHallTiles:
+  - {fileID: 11400000, guid: ff1433b94b4639a4294f1e82a74a4093, type: 2}
+  horizontalHallTiles:
+  - {fileID: 11400000, guid: f63ce1fe08a173e4ea1d86b7fc195ea1, type: 2}
+  counterTopLeft: {fileID: 11400000, guid: 653b874c7b8bb1542b569d5d48c79df5, type: 2}
+  counterTopCenter: {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  counterTopRight: {fileID: 11400000, guid: 4ce7c35ec1bb0f64b9fa8fb52d6153ea, type: 2}
+  counterMidLeft: {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  counterMidCenter: {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  counterMidRight: {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  counterBottomLeft: {fileID: 11400000, guid: 533d2d08aa80f254b99a0b4bacd37e35, type: 2}
+  counterBottomCenter: {fileID: 11400000, guid: 7fbb553dcf9b37844bf8368aea4bc1e2,
+    type: 2}
+  counterBottomRight: {fileID: 11400000, guid: 785d1eab45882c540889add5e0194f34, type: 2}
+  sink: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f, type: 3}
+  fridge: {fileID: 1197502945889937864, guid: d5b7695adba9414469e67255f9a1944c, type: 3}
+  oven: {fileID: 929690230665948614, guid: cc9b0588dd8af37449b534ae5840d920, type: 3}
+  wasteBasket: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  cabinetCounter: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  plainCounter: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  flourSack: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  potatoSack: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  crate: {fileID: 3680369345754027799, guid: 64f20d36f6c96664388ba39818a1e50f, type: 3}
 --- !u!1 &1659961101
 GameObject:
   m_ObjectHideFlags: 0
@@ -1727,7 +1768,7 @@ Transform:
   - {fileID: 1708346326}
   - {fileID: 253163647}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1708346324
 GameObject:
@@ -1769,6 +1810,7 @@ MonoBehaviour:
   Library: {fileID: 1050395158}
   DiningRoom: {fileID: 2067136607}
   Bathroom: {fileID: 644305301}
+  Kitchen: {fileID: 1473554392}
 --- !u!4 &1708346326
 Transform:
   m_ObjectHideFlags: 0
@@ -1788,6 +1830,7 @@ Transform:
   - {fileID: 1050395157}
   - {fileID: 2067136606}
   - {fileID: 644305300}
+  - {fileID: 1473554391}
   m_Father: {fileID: 1659961105}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2069,5 +2112,5 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

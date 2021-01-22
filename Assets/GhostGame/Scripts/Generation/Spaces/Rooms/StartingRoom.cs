@@ -4,21 +4,14 @@ using UnityEngine;
 
 public class StartingRoom : Room
 {
-	public override TileSet TileSet
-	{
-		get
-		{
-			return tileSet;
-		}
-	}
-
 	StartingRoomTileSet tileSet;
 
 	public StartingRoom() : base()
 	{
+		roomCode = RoomCode.StartingRoom;
 		widthRange = new IntRange(15, 20);
 		heightRange = new IntRange(15, 20);
-		tileSet = TileSetRegistry.I.StartingRoom;
+		tileSet = (StartingRoomTileSet)TileSet;
 	}
 
 	public override Doorway PossibleDoorway()
@@ -49,7 +42,7 @@ public class StartingRoom : Room
 	public override void GenerateFurniture()
 	{
 		Vector2 randomSpot = new Vector2(Random.Range(x, x + width), Random.Range(y, y + width));
-		GameObject obstacle = Object.Instantiate(TileSetRegistry.I.StartingRoom.dresser);
+		GameObject obstacle = Object.Instantiate(tileSet.dresser);
 		obstacle.transform.position = randomSpot;
 		ItemContainer itemContainer = obstacle.GetComponent<ItemContainer>();
 		Item item = Object.Instantiate(PrefabRegistry.I.crucifix).GetComponent<Item>();

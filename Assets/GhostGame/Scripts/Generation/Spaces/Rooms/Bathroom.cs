@@ -6,18 +6,13 @@ public class Bathroom : Room
 {
 
 	BathroomTileset tileSet;
-	public override TileSet TileSet
-	{
-		get
-		{
-			return tileSet;
-		}
-	}
+
 	public Bathroom() : base()
 	{
+		roomCode = RoomCode.Bathroom;
 		widthRange = new IntRange(5, 6);
 		heightRange = new IntRange(5, 6);
-		tileSet = TileSetRegistry.I.Bathroom;
+		tileSet = (BathroomTileset)TileSet;
 	}
 
 	public override bool CanMakeMoreDoors()
