@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 986327062780614871}
   - component: {fileID: 6411272174665684388}
   - component: {fileID: -5768306233119826091}
+  - component: {fileID: -7522932647473855354}
   m_Layer: 0
   m_Name: Light
   m_TagString: Untagged
@@ -104,7 +105,7 @@ MonoBehaviour:
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 1f6cb94a00000000
   m_LightCookieSprite: {fileID: 0}
-  m_UseNormalMap: 0
+  m_UseNormalMap: 1
   m_LightOrder: 0
   m_AlphaBlendOnOverlap: 0
   m_ShadowIntensity: 1
@@ -137,10 +138,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f18e726cb7738ed4ba5efe34bc3b48b2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  storyLocation: 0
+  spawnOnServer: 1
   parentNode: {fileID: 0}
   children: []
   childEnabled: 
-  isOn: 1
 --- !u!58 &-5768306233119826091
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -157,3 +161,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
+--- !u!114 &-7522932647473855354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2431507290888846206}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  m_AssetId: 
+  hasSpawned: 0

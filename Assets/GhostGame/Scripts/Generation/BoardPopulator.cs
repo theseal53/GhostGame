@@ -6,10 +6,15 @@ public class BoardPopulator
 {
     public void PopulateBoard(Board board)
 	{
-		foreach(Room room in board.rooms)
+		foreach (Story story in board.stories)
 		{
-			room.GenerateFurniture();
-			room.GenerateLights();
+			foreach (Room room in story.rooms)
+			{
+				room.GenerateFurniture();
+				room.GenerateLights();
+			}
+
 		}
+
 	}
 }

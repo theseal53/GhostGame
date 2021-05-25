@@ -84,8 +84,6 @@ public class LobbyPlayer : NetworkBehaviour
 			playerReadyTexts[i].text = string.Empty;
 		}
 
-		print("Update display loop");
-		print(Network.LobbyPlayers.Count);
 		for (int i = 0; i < Network.LobbyPlayers.Count; i++)
 		{
 			playerNameTexts[i].text = Network.LobbyPlayers[i].DisplayName;

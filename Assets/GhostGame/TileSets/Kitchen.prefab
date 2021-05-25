@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9095901824414598453
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9095901824414598452}
+  - component: {fileID: 9095901824414598459}
+  m_Layer: 0
+  m_Name: Kitchen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9095901824414598452
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9095901824414598453}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9095901824414598459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9095901824414598453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fba92122338ed44e9c39c0392af2c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileCollections:
+  - {fileID: 6845207395144022330, guid: e613e25914798da48ab47a0f5adf3154, type: 3}
+  counterTopLeft: {fileID: 11400000, guid: 653b874c7b8bb1542b569d5d48c79df5, type: 2}
+  counterTopCenter: {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  counterTopRight: {fileID: 11400000, guid: 4ce7c35ec1bb0f64b9fa8fb52d6153ea, type: 2}
+  counterMidLeft: {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  counterMidCenter: {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  counterMidRight: {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  counterBottomLeft: {fileID: 11400000, guid: 533d2d08aa80f254b99a0b4bacd37e35, type: 2}
+  counterBottomCenter: {fileID: 11400000, guid: 7fbb553dcf9b37844bf8368aea4bc1e2,
+    type: 2}
+  counterBottomRight: {fileID: 11400000, guid: 785d1eab45882c540889add5e0194f34, type: 2}
+  sink: {fileID: -8307696611466677195, guid: 76e7754f4fda660449ca74560080e141, type: 3}
+  fridge: {fileID: 8329477757004964804, guid: 156c58c939221004c805b73623ab0d88, type: 3}
+  oven: {fileID: -8307696611466677195, guid: 76e7754f4fda660449ca74560080e141, type: 3}
+  wasteBasket: {fileID: 5635278342236274609, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  cabinetCounter: {fileID: 202959081777179036, guid: 825d45fa03b752d419b6005b53a890f0,
+    type: 3}
+  plainCounter: {fileID: 202959081777179036, guid: 825d45fa03b752d419b6005b53a890f0,
+    type: 3}
+  flourSack: {fileID: 5635278342236274609, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  potatoSack: {fileID: 5635278342236274609, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  crate: {fileID: 5635278342236274609, guid: 64f20d36f6c96664388ba39818a1e50f, type: 3}

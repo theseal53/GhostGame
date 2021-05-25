@@ -23,9 +23,17 @@ public class PrefabRegistry : MonoBehaviour
 		}
 	}
 
+	public List<GameObject> furnitureContainers;
+	public List<GameObject> mobsContainers;
+	public List<GameObject> itemsContainers;
+
 	public GameObject player;
 	public GameObject ghost;
 	public GameObject crucifix;
-	public GameObject light;
-	
+	public GameObject electricLight;
+	public GameObject boxOverlay;
+	public GameObject lightSwitch;
+	public GameObject standardWallLight;
+	public GameObject spiderChandelier;
+	public GameObject ceilingChainLight;
 }

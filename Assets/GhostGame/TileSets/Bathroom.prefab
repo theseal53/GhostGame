@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7949058404922265134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7949058404922265129}
+  - component: {fileID: 7949058404922265128}
+  m_Layer: 0
+  m_Name: Bathroom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7949058404922265129
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949058404922265134}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7949058404922265128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7949058404922265134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98f5c02637e52874d952791a43b4d0b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileCollections:
+  - {fileID: 4904178845515439506, guid: b3c7a54f2116272498e9c9bd08227579, type: 3}
+  sink: {fileID: 1713768385668610111, guid: 920777dc24fa77e449db9e5a52131b13, type: 3}
+  cabinet: {fileID: 8030264288235291957, guid: d311696b4bb0daa4fa7c1602ce405684, type: 3}
+  bathtub: {fileID: 1101379157464867146, guid: d5b7695adba9414469e67255f9a1944c, type: 3}
+  toilet: {fileID: 1426638474766179011, guid: ec50df32e5a290c43b067186b199cb0f, type: 3}
+  wasteBasket: {fileID: -646955670198871668, guid: 41866eebfda6db5439fbfc4f6f31268b,
+    type: 3}

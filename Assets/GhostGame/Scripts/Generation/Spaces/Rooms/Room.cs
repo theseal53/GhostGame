@@ -1,5 +1,6 @@
 ﻿//Taken largely from https://www.youtube.com/watch?v=wnoLaui3uO4
 
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class Room
 {
 	public int x;
 	public int y;
+	public int story;
 	public int width;
 	public int height;
 	public RoomCode roomCode = RoomCode.Test1;
@@ -21,6 +23,8 @@ public class Room
 	protected int generatedDoorwayBreadth = Constants.DEFAULT_DOOR_BREADTH;
 	protected int margin = 1;
 
+	public LightSwitch lightSwitch;
+
 	public virtual TileSet TileSet
 	{
 		get
@@ -29,8 +33,10 @@ public class Room
 		}
 	}
 
-	public virtual void SetupRoom(Board board, Doorway doorway)
+	public virtual void SetupRoom(Doorway doorway, int story)
 	{
+		this.story = story;
+		doorways.Add(doorway);
 		SetRoomDimensions();
 
 		switch (doorway.roomOutDirection)
@@ -61,7 +67,7 @@ public class Room
 				//y = Mathf.Clamp(y, 0, board.rows - height);
 				break;
 		}
-		doorways.Add(doorway);
+		
 	}
 
 	protected virtual void SetRoomDimensions()
@@ -118,7 +124,7 @@ public class Room
 		return (Direction)smallest[Random.Range(0, smallest.Count)];
 	}
 
-	public virtual void PrintToTilesArray(short[,] tiles)
+	public virtual void PrintToTilesArray(sbyte[][][] tiles)
 	{
 		for (int j = 0; j < width; j++)
 		{
@@ -127,7 +133,7 @@ public class Room
 			for (int k = 0; k < height; k++)
 			{
 				int yCoord = y + k;
-				tiles[yCoord, xCoord] = (short)roomCode;
+				tiles[story][yCoord][xCoord] = (sbyte)roomCode;
 			}
 		}
 	}
@@ -154,7 +160,7 @@ public class Room
 		}
 	}
 
-	public bool TestRoomValidity(Board board)
+	public virtual bool TestRoomValidity(Board board)
 	{
 		int margin = Constants.ROOM_MARGIN;
 
@@ -162,6 +168,9 @@ public class Room
 		bool movedSouth = false;
 		bool movedEast = false;
 		bool movedWest = false;
+
+		int cachedX = x;
+		int cachedY = y;
 
 		if (x < board.boardMargin)
 			x = board.boardMargin; movedEast = true;
@@ -243,7 +252,7 @@ public class Room
 		});
 		List<MovePair> options = new List<MovePair>() { moveEast, moveWest, moveNorth, moveSouth };
 
-		List<Room> collisionRooms = new List<Room>(board.rooms);
+		List<Room> collisionRooms = new List<Room>(board.stories[story].rooms);
 
 		Rect rect = new Rect(x - margin, y - margin, width + margin, height + margin);
 
@@ -267,8 +276,6 @@ public class Room
 					{
 						movePair.action(room);
 						if (moved)
-							Debug.Log("Moved something!");
-						if (moved)
 							break;
 					}
 				}
@@ -280,6 +287,20 @@ public class Room
 				//It won't be able to collide anymore
 				collisionRooms.Remove(room);
 				i = 0;
+			}
+		}
+		//If it all worked, make corrections to doorways and hallways
+		foreach(Doorway doorway in doorways)
+		{
+			if (DirectionUtil.Orientation(doorway.roomOutDirection) == Orientation.Horizontal)
+			{
+				doorway.x += x - cachedX;
+				doorway.corridor.length += x - cachedX;
+			}
+			else
+			{
+				doorway.y += y - cachedY;
+				doorway.corridor.length += y - cachedY;
 			}
 		}
 		return true;
@@ -321,36 +342,144 @@ public class Room
 
 	public virtual void GenerateFurniture()
 	{
-		//Do nothing
+		GenerateLightSwitch();
+	}
+
+	public virtual void GenerateLightSwitch()
+	{
+		Doorway target = doorways[0];
+		Vector2 position = new Vector2(target.x, target.y);
+		if (target.roomOutDirection == Direction.North)
+		{
+			position.y += 1;
+			if (Random.value > .5f || target.x == x)
+				position.x += target.breadth;
+			else
+				position.x -= 1;
+		}
+		else if (target.roomOutDirection == Direction.South)
+		{
+			if (Random.value > .5f || target.x == x)
+				position.x += target.breadth;
+			else
+				position.x -= 1;
+		}
+		else if (target.roomOutDirection == Direction.East)
+		{
+			if (Random.value > .5f || target.y == y)
+				position.y += target.breadth;
+			else
+				position.y -= 1;
+		}
+		else if (target.roomOutDirection == Direction.West)
+		{
+			if (Random.value > .5f || target.y == y)
+				position.y += target.breadth;
+			else
+				position.y -= 1;
+		}
+		lightSwitch = (LightSwitch)InstantiateFurniture(PrefabRegistry.I.lightSwitch.GetComponent<LightSwitch>(), position);
+		if (lightSwitch)
+		{
+			lightSwitch.GetComponent<DoubleCardinalSprite>().UpdateDirection(DirectionUtil.Reverse(target.roomOutDirection));
+		}
+		lightSwitch.gameObject.name = GetType().Name + " LightSwitch";
 	}
 
 	public virtual void GenerateLights()
 	{
-		GameObject light = Object.Instantiate(PrefabRegistry.I.light);
-		light.transform.position = new Vector2(x + width / 2, y + width / 2);
+		GenerateDoorwayLights();
+		GenerateInnerRoomLights();
 	}
 
-	protected GameObject AttemptObjectInstantiation(GameObject prefab, int x, int y, int width, int height)
+	public virtual void GenerateDoorwayLights()
 	{
-		if (!ObstructsDoorway(x, y, width, height))
+		foreach (Doorway doorway in doorways)
 		{
-			return Object.Instantiate(prefab, new Vector3(x, y), Quaternion.identity);
-		}
-		else
-		{
-			return null;
+			Vector2 position = new Vector2(doorway.x, doorway.y);
+			if (doorway.roomOutDirection == Direction.North)
+			{
+				position.y += 1;
+				if (Random.value > .5f || doorway.x == x)
+					position.x += doorway.breadth;
+				else
+					position.x -= 1;
+			}
+			else if (doorway.roomOutDirection == Direction.South)
+			{
+				if (Random.value > .5f || doorway.x == x)
+					position.x += doorway.breadth;
+				else
+					position.x -= 1;
+			}
+			else if (doorway.roomOutDirection == Direction.East)
+			{
+				if (Random.value > .5f || doorway.y == y)
+					position.y += doorway.breadth;
+				else
+					position.y -= 1;
+			}
+			else if (doorway.roomOutDirection == Direction.West)
+			{
+				if (Random.value > .5f || doorway.y == y)
+					position.y += doorway.breadth;
+				else
+					position.y -= 1;
+			}
+			ElectricLamp electricLamp = (ElectricLamp)InstantiateFurniture(PrefabRegistry.I.standardWallLight.GetComponent<ElectricLamp>(), position);
+			electricLamp.GetComponent<CardinalSprite>().UpdateDirection(DirectionUtil.Reverse(doorway.roomOutDirection));
+			lightSwitch.AddChild(electricLamp);
 		}
 	}
-	protected GameObject AttemptObjectInstantiation(GameObject prefab, Rect rect)
+
+	public virtual void GenerateInnerRoomLights()
 	{
-		if (!ObstructsDoorway(rect))
+		Vector2 position = new Vector2(x + width / 2, y + height / 2);
+		ElectricLamp electricLamp = (ElectricLamp)InstantiateFurniture(PrefabRegistry.I.ceilingChainLight.GetComponent<Furniture>(), position);
+		lightSwitch.AddChild(electricLamp);
+	}
+
+	protected Furniture InstantiateFurniture(Furniture prefab, Vector2 position)
+	{
+		if (!GameManager.I.isServer && prefab.spawnOnServer) { return null; }
+		Furniture newFurniture = Object.Instantiate(prefab, position, Quaternion.identity);
+		newFurniture.Init(story);
+		if (newFurniture != null && GameManager.I.isServer && newFurniture.spawnOnServer)
 		{
-			return Object.Instantiate(prefab, new Vector3(rect.x, rect.y), Quaternion.identity);
+			NetworkServer.Spawn(newFurniture.gameObject);
 		}
-		else
+		return newFurniture;
+	}
+
+	protected Furniture AttemptFurnitureInstantiation(Furniture prefab, int x, int y, int width, int height)
+	{
+		if (!GameManager.I.isServer && prefab.spawnOnServer) { return null; }
+		if (!ObstructsDoorway(x, y, width, height) && !ObstructsLightSwitch(x, y, width, height))
 		{
-			return null;
+			Furniture newFurniture = Object.Instantiate(prefab, new Vector3(x, y), Quaternion.identity);
+			newFurniture.Init(story);
+			if (newFurniture != null && GameManager.I.isServer && newFurniture.spawnOnServer)
+			{
+				NetworkServer.Spawn(newFurniture.gameObject);
+			}
+			return newFurniture;
 		}
+		return null;
+	}
+	protected Furniture AttemptFurnitureInstantiation(Furniture prefab, Rect rect)
+	{
+		if (!GameManager.I.isServer && prefab.spawnOnServer) { return null; }
+		if (!ObstructsDoorway(rect) && !ObstructsLightSwitch(rect))
+		{
+			Furniture newFurniture = Object.Instantiate(prefab, new Vector3(rect.x, rect.y), Quaternion.identity);
+			newFurniture.Init(story);
+			if (newFurniture != null && GameManager.I.isServer && newFurniture.spawnOnServer)
+			{
+				NetworkServer.Spawn(newFurniture.gameObject);
+			}
+			return newFurniture;
+		}
+		return null;
 	}
 
 	protected bool ObstructsDoorway(int x, int y, int width, int height)
@@ -379,6 +508,23 @@ public class Room
 		}
 		return false;
 	}
+
+	protected bool ObstructsLightSwitch(int x, int y, int width, int height)
+	{
+		Rect rect = new Rect(x, y, width, height);
+		return ObstructsLightSwitch(rect);
+	}
+	protected bool ObstructsLightSwitch(Rect rect)
+	{
+		Rect switchRect = new Rect(lightSwitch.transform.position, Vector2.one);
+		if (rect.Overlaps(switchRect))
+		{
+			return true;
+		}
+		return false;
+	}
+
+
 
 	public virtual bool CanMakeMoreDoors()
 	{

@@ -3,53 +3,61 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
+using UnityEngine.Rendering;
 
 public class PlayerCharacter : Mob
 {
-	public float runSpeed = 40f;
+	[Header("Visibility")]
+	public Light2D visibleLight;
+	public Light2D lineOfSightLight;
+
+	public SortingGroup sortingGroup;
+
+	[Header("Movement/Interaction")]
+	public float moveSpeed = 10;
+	public float interactRadius = 2;
 
 	float horizontalMove = 0f;
 	float verticalMove = 0f;
-
-	bool interactPressed;
-	bool itemPressed;
-
-	public float moveSpeed = 10;
-
-	public float interactRadius = 2;
-
-	public GameObject visibleLight;
-	public GameObject LineOfSightLight;
 
 	public Item heldItem;
 
 	// Update is called once per frame
 
-	public void BeginPlay()
+	public override void OnStartAuthority()
 	{
-		print("Begin play in playerCharacter");
-		transform.position = GameManager.I.board.startingRoom.StartingPositions()[0];
-		gameObject.SetActive(true);
+		visibleLight.gameObject.SetActive(true);
+		lineOfSightLight.gameObject.SetActive(true);
+		base.OnStopAuthority();
 	}
-
 
 	void Update()
 	{
-		if (isClient)
+		if (hasAuthority)
 		{
-			CmdSetMove(Input.GetAxisRaw("Horizontal") * runSpeed, Input.GetAxisRaw("Vertical") * runSpeed);
-			interactPressed = Input.GetKeyDown(KeyCode.E);
+			CmdSetMove(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+			bool interactPressed = Input.GetKeyDown(KeyCode.E);
 			if (interactPressed)
 			{
 				CmdAttemptInteraction();
 			}
 
-			itemPressed = Input.GetKeyDown(KeyCode.Q);
+			bool itemPressed = Input.GetKeyDown(KeyCode.Q);
 			if (itemPressed)
 			{
 				CmdAttemptItemUse();
 			}
 		}
+	}
+
+	[ServerCallback]
+	void FixedUpdate()
+	{
+		// Move our character
+		Vector2 move = new Vector2(horizontalMove * moveSpeed * Time.fixedDeltaTime, verticalMove * moveSpeed * Time.fixedDeltaTime);
+		Move(move);
+
 	}
 
 	[Command]
@@ -59,26 +67,21 @@ public class PlayerCharacter : Mob
 		verticalMove = vertical;
 	}
 
-	void FixedUpdate()
-	{
-		// Move our character
-		Vector2 move = new Vector2(horizontalMove * Time.fixedDeltaTime, verticalMove * Time.fixedDeltaTime);
-		Move(move * moveSpeed);
-
-	}
-
 	[Command]
 	void CmdAttemptInteraction()
 	{
-		Collider2D[] proximityObjects = Physics2D.OverlapCircleAll(transform.position, interactRadius);
+		Collider2D[] proximityObjects = Physics2D.OverlapCircleAll(transform.position, interactRadius, 1 << (int)Layering.StoryToPhysicsLayer(storyLocation));
 		HashSet<Entity> availableEntities = new HashSet<Entity>();
 		foreach(Collider2D collider in proximityObjects)
 		{
 			Entity entity = collider.GetComponent<Entity>();
 			if (entity != null)
 			{
+				
+
 				if (entity.IsInteractable())
 				{
+					print(entity.gameObject);
 					availableEntities.Add(entity);
 				}
 			}
@@ -125,6 +128,21 @@ public class PlayerCharacter : Mob
 		{
 			heldItem.UseByCharacter();
 		}
+	}
+
+	public override void ChangeStory(Verticality verticality)
+	{
+		base.ChangeStory(verticality);
+		print("Changing to story " + storyLocation);
+		EventHub.PlayerChangeStoryBroadcast(this);
+	}
+
+	protected override void UpdateLayering()
+	{
+		base.UpdateLayering();
+		sortingGroup.sortingLayerID = Layering.StoryToSortingLayerID(storyLocation);
+		sortingGroup.sortingOrder = Constants.ENTITY_SORTING_ORDER;
+		visibleLight.m_ApplyToSortingLayers = new int[] { Layering.StoryToSortingLayerID(storyLocation) };
 	}
 
 }

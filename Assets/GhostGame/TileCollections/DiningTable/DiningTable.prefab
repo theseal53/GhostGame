@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3296653998308078774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3296653998308078773}
+  - component: {fileID: 3296653998308078772}
+  m_Layer: 0
+  m_Name: DiningTable
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3296653998308078773
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3296653998308078774}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3296653998308078772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3296653998308078774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6511a6dec44de7c4bb2c7c28dd088725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLeftTiles:
+  - {fileID: 11400000, guid: 653b874c7b8bb1542b569d5d48c79df5, type: 2}
+  topCenterTiles:
+  - {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  topRightTiles:
+  - {fileID: 11400000, guid: 4ce7c35ec1bb0f64b9fa8fb52d6153ea, type: 2}
+  midLeftTiles:
+  - {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  midCenterTiles:
+  - {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  midRightTiles:
+  - {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  bottomLeftTiles:
+  - {fileID: 11400000, guid: 533d2d08aa80f254b99a0b4bacd37e35, type: 2}
+  bottomCenterTiles:
+  - {fileID: 11400000, guid: 7fbb553dcf9b37844bf8368aea4bc1e2, type: 2}
+  bottomRightTiles:
+  - {fileID: 11400000, guid: 785d1eab45882c540889add5e0194f34, type: 2}
+  verticalHallTiles:
+  - {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}
+  horizontalHallTiles:
+  - {fileID: 11400000, guid: 285db1e5d8ec0054eafff543c75a9f2e, type: 2}

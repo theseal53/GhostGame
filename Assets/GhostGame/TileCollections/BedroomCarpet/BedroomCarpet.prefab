@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7060947009139536714
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6345560813894318886}
+  - component: {fileID: 2958962805997726389}
+  m_Layer: 0
+  m_Name: BedroomCarpet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6345560813894318886
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7060947009139536714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 80.10758, y: 46.996544, z: -6.5155845}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2958962805997726389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7060947009139536714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6511a6dec44de7c4bb2c7c28dd088725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLeftTiles: []
+  topCenterTiles: []
+  topRightTiles: []
+  midLeftTiles: []
+  midCenterTiles:
+  - {fileID: 11400000, guid: ec3c65c0071023248b2f993fe9491403, type: 2}
+  - {fileID: 11400000, guid: f055b0854a778c3438a6d73094024a40, type: 2}
+  - {fileID: 11400000, guid: 8a9918a07d57b3f49977d7e2d6e7fa79, type: 2}
+  - {fileID: 11400000, guid: f4431802cd691804a9a0bbe9904c9004, type: 2}
+  midRightTiles: []
+  bottomLeftTiles: []
+  bottomCenterTiles: []
+  bottomRightTiles: []
+  verticalHallTiles: []
+  horizontalHallTiles: []

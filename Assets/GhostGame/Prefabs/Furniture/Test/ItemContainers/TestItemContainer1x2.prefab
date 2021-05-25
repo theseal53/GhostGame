@@ -99,6 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  spawnOnServer: 1
   containedItem: {fileID: 0}
 --- !u!61 &5785046392143674680
 BoxCollider2D:

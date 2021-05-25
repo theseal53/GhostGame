@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8762179683410080667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8762179683410080666}
+  - component: {fileID: 8762179683410080645}
+  m_Layer: 0
+  m_Name: Test1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8762179683410080666
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8762179683410080667}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8762179683410080645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8762179683410080667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6511a6dec44de7c4bb2c7c28dd088725, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  topLeftTiles:
+  - {fileID: 11400000, guid: cea6529f99a57b14f91f703eae4c2854, type: 2}
+  topCenterTiles:
+  - {fileID: 11400000, guid: c30a08d0fc95c0c4087c621cf55900c9, type: 2}
+  topRightTiles:
+  - {fileID: 11400000, guid: 469d1dc8d4f468e4f914fe52faa9264f, type: 2}
+  midLeftTiles:
+  - {fileID: 11400000, guid: 96352c361276e2d4fa41dc080de986a2, type: 2}
+  midCenterTiles:
+  - {fileID: 11400000, guid: 33f65adc58ae89445915f1618196bc0b, type: 2}
+  midRightTiles:
+  - {fileID: 11400000, guid: 49e59a63fd12b3a4c9c01191862ec501, type: 2}
+  bottomLeftTiles:
+  - {fileID: 11400000, guid: b39314d2194c7f3488f7be75dc93eb83, type: 2}
+  bottomCenterTiles:
+  - {fileID: 11400000, guid: 4404afbc1cd3ba54d9b4d763c918dfac, type: 2}
+  bottomRightTiles:
+  - {fileID: 11400000, guid: 48b0901282ad0dd48ad6ba30bf02c70b, type: 2}
+  verticalHallTiles:
+  - {fileID: 11400000, guid: dbe890cd7addc564c80076985a81fc6b, type: 2}
+  horizontalHallTiles:
+  - {fileID: 11400000, guid: fe6e52b06dc7d3e4d87ef9c456d43b66, type: 2}

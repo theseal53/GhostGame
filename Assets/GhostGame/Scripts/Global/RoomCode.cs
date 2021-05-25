@@ -4,10 +4,26 @@
     Test2,
     Test3,
     Test4,
+    Room,
+    //Ground Story
     StartingRoom,
     Library,
     DiningRoom,
-    Bathroom,
     Kitchen,
-    Room
+    MasterBedroom,
+    GameRoom,
+    Lounge,
+    //Basement
+    BasementLanding,
+    Catacomb,
+    Cellar,
+    BoilerRoom,
+    PanicRoom,
+    //Upper Story
+    UpperStoryLanding,
+    GuestBedroom,
+    ServantBedroom,
+    Study,
+    //Shared
+    Bathroom
 }

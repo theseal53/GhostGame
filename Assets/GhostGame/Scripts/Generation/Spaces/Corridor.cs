@@ -12,15 +12,17 @@ public class Corridor
 	public Doorway door2;
 	public int length;
 	public int breadth;
-	public short id;
+	public sbyte id;
+	public int story;
 
 	public IntRange lengthRange = new IntRange(0, 5);
 
-	public void SetupCorridor(Doorway doorway, Board board, short corridorId, int breadth = Constants.DEFAULT_DOOR_BREADTH)
+	public void SetupCorridor(Doorway doorway, Board board, sbyte corridorId, int story, int breadth = Constants.DEFAULT_DOOR_BREADTH)
 	{
 		door1 = doorway;
 		this.breadth = breadth;
 		id = corridorId;
+		this.story = story;
 
 		length = lengthRange.Random;
 
@@ -44,8 +46,12 @@ public class Corridor
 		door2.corridor = this;
 	}
 
-	public void PrintToTilesArray(short[,] tiles)
+	public void PrintToTilesArray(sbyte[][][] tiles)
 	{
+		//Debug.Log(door2.room.roomCode);
+		sbyte door2Id = (sbyte)door2.room.roomCode;
+		//Debug.Log(door2Id);
+
 		int stepX = 0;
 		if (door2.x > door1.x)
 		{
@@ -71,7 +77,7 @@ public class Corridor
 		{
 			for (int i = 0; i < breadth; i++)
 			{
-				tiles[currentY+i,currentX] = id;
+				tiles[story][currentY+i][currentX] = door2Id;
 			}
 			currentX += stepX;
 		}
@@ -79,10 +85,17 @@ public class Corridor
 		{
 			for (int i = 0; i < breadth; i++)
 			{
-				tiles[currentY,currentX+i] = id;
+				tiles[story][currentY][currentX+i] = door2Id;
 			}
 			currentY += stepY;
 		}
+	}
+
+	public void UpdateBreadth(int newBreadth)
+	{
+		breadth = newBreadth;
+		door1.breadth = newBreadth;
+		door2.breadth = newBreadth;
 	}
 
 	public override string ToString()

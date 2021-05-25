@@ -17,6 +17,7 @@ public class Mob : Entity
 
 	public void Move(Vector2 move)
 	{
+		//print(move);
 		// Move the character by finding the target velocity
 		Vector3 targetVelocity = move;
 		// And then smoothing it out and applying it to the character
@@ -46,5 +47,10 @@ public class Mob : Entity
 		Vector3 theScale = transform.localScale;
 		theScale.x *= -1;
 		transform.localScale = theScale;
+	}
+
+	protected override void SortIntoParent()
+	{
+		transform.SetParent(PrefabRegistry.I.mobsContainers[storyLocation].transform);
 	}
 }

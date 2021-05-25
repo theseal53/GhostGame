@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public struct GameObjectDimensionSet
+public struct FurnitureDimensionSet
 {
-	public GameObject target;
+	public Furniture target;
 	public int breadth;
-	public GameObjectDimensionSet(GameObject target, int breadth)
+	public FurnitureDimensionSet(Furniture target, int breadth)
 	{
 		this.target = target;
 		this.breadth = breadth;

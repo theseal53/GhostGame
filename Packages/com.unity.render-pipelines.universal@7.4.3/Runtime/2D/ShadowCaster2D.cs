@@ -18,7 +18,7 @@ namespace UnityEngine.Experimental.Rendering.Universal
         [SerializeField] bool m_UseRendererSilhouette = true;
         [SerializeField] bool m_CastsShadows = true;
         [SerializeField] bool m_SelfShadows = false;
-        [SerializeField] int[] m_ApplyToSortingLayers = null;
+        [SerializeField] public int[] m_ApplyToSortingLayers = null;
         [SerializeField] Vector3[] m_ShapePath = null;
         [SerializeField] int m_ShapePathHash = 0;
         [SerializeField] Mesh m_Mesh;

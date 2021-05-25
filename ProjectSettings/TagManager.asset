@@ -15,9 +15,9 @@ TagManager:
   - 
   - LineOfSight
   - 
-  - 
-  - 
-  - 
+  - Basement
+  - GroundFloor
+  - UpperStory
   - 
   - 
   - 
@@ -40,6 +40,15 @@ TagManager:
   m_SortingLayers:
   - name: Base
     uniqueID: 1253665823
+    locked: 0
+  - name: Basement
+    uniqueID: 3867401753
+    locked: 0
+  - name: GroundStory
+    uniqueID: 1713677845
+    locked: 0
+  - name: UpperStory
+    uniqueID: 973014873
     locked: 0
   - name: LineOfSight
     uniqueID: 1090847921

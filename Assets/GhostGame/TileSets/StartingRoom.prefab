@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3353746176827065352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3353746176827065353}
+  - component: {fileID: 3353746176827065354}
+  m_Layer: 0
+  m_Name: StartingRoom
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3353746176827065353
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3353746176827065352}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3353746176827065354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3353746176827065352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 838b62fd9d4ba244eac54ba8940f01b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileCollections:
+  - {fileID: 7504678487039936641, guid: 66f081e4250b8e7448b23efc1df90062, type: 3}
+  OneByOneObstacle: {fileID: 5635278342236274609, guid: 64f20d36f6c96664388ba39818a1e50f,
+    type: 3}
+  dresser: {fileID: 3171986103762749627, guid: 373f553bf9295b74ba36d07f4c210b88, type: 3}
+  staircaseUp: {fileID: 1315566713567808797, guid: 52aeb1c7f5048af44a7b1cd8c83d39d6,
+    type: 3}
+  staircaseDown: {fileID: 1315566713567808797, guid: 80cc3241afd98584d91d978fa4b018d0,
+    type: 3}

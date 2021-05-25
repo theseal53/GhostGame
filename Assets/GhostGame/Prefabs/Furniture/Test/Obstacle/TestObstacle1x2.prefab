@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4974344141527134237}
   - component: {fileID: -4012203681676562116}
   - component: {fileID: 4937928458656540658}
+  - component: {fileID: 2847344890483547199}
   m_Layer: 0
   m_Name: TestObstacle1x2
   m_TagString: Untagged
@@ -126,3 +127,17 @@ MonoBehaviour:
   serverOnly: 0
   m_AssetId: 
   hasSpawned: 0
+--- !u!114 &2847344890483547199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8665037827651250553}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebb6b058949e1b9468e78a10cd47592a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1

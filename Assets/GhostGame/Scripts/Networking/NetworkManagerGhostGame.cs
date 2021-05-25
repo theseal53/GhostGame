@@ -22,10 +22,13 @@ public class NetworkManagerGhostGame : NetworkManager
     public static event Action OnClientDisconnected;
     public static event Action OnServerReadied;
 
+    public bool quickStart = false;
+
     public List<LobbyPlayer> LobbyPlayers { get; } = new List<LobbyPlayer>();
     public List<ActiveGamePlayer> GamePlayers { get; } = new List<ActiveGamePlayer>();
     public List<NetworkConnection> Connections { get; } = new List<NetworkConnection>();
 
+    public GameObject gameManagerPrefab;
 
     //Generic
 
@@ -92,7 +95,7 @@ public class NetworkManagerGhostGame : NetworkManager
     {
         if (SceneManager.GetActiveScene().path == playScene)
         {
-            OnClientSceneChangedGame(conn);
+            //OnClientSceneChangedGame(conn);
         }
     }
 
@@ -127,6 +130,10 @@ public class NetworkManagerGhostGame : NetworkManager
         Connections.Add(conn);
         roomPlayerInstance.IsLeader = isLeader;
         NetworkServer.AddPlayerForConnection(conn, roomPlayerInstance.gameObject);
+        if (quickStart)
+		{
+            TransitionLobbyToGame();
+		}
     }
 
     private void OnServerDisconnectLobby(NetworkConnection conn)
@@ -188,47 +195,30 @@ public class NetworkManagerGhostGame : NetworkManager
 
     public void NotifyGameOfReadyState()
     {
-        foreach (ActiveGamePlayer player in GamePlayers)
+        if (IsGameReadyToStart())
         {
-            player.HandleReadyToStart(IsGameReadyToStart());
+            GameManager.I.BeginGame();
         }
     }
 
     bool IsGameReadyToStart()
     {
-        if (numPlayers < minPlayers) { return false; }
-        foreach (LobbyPlayer player in LobbyPlayers)
+        foreach (ActiveGamePlayer player in GamePlayers)
         {
             if (!player.IsReady) { return false; }
         }
-        print("Game is ready to start!");
         return true;
     }
 
-    void OnClientSceneChangedGame(NetworkConnection conn)
-	{
-        print("On Client scene change");
-
-        print(GamePlayers.Count);
-        /*foreach (ActiveGamePlayer player in GamePlayers)
-        {
-            if (player.isLocalPlayer)
-			{
-                player.RequestBoardInfo();
-			}
-        }*/
-    }
-
     void OnServerSceneChangedGame()
-	{
-        print("Server scene changed");
-        for (int i = 0; i < Connections.Count; i++)
+    {
+        for (int i = Connections.Count - 1; i >= 0; i--)
         {
-            NetworkConnection conn = Connections[i];
             ActiveGamePlayer activeGamePlayer = Instantiate(ActiveGamePlayerPrefab);
-            NetworkServer.AddPlayerForConnection(conn, activeGamePlayer.gameObject);
+            NetworkServer.AddPlayerForConnection(Connections[i], activeGamePlayer.gameObject);
         }
-    }
+        GameObject gameManager = Instantiate(gameManagerPrefab);
+        NetworkServer.Spawn(gameManager);
 
-    //Nothing yet
+    }
 }

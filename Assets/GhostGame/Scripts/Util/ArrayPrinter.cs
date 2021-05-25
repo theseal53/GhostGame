@@ -6,16 +6,24 @@ using UnityEngine;
 
 public class ArrayPrinter
 {
-    public static void Print2DArray(int[][] matrix, string path)
+    public static void Print3DArray(sbyte[][][] matrix, string path)
     {
         File.WriteAllText(path, string.Empty);
         Debug.Log("Printing array to " + path);
         StreamWriter writer = new StreamWriter(path);
+
         for (int i = 0; i < matrix.Length; i++)
         {
             for (int j = 0; j < matrix[0].Length; j++)
             {
-                writer.Write(matrix[i][j] + " ");
+                for (int k = 0; k < matrix[0][0].Length; k++)
+                {
+                    if (matrix[i][j][k] == -1)
+                        writer.Write("X ");
+                    else
+                        writer.Write(matrix[i][j][k] + " ");
+                }
+                writer.WriteLine();
             }
             writer.WriteLine();
         }

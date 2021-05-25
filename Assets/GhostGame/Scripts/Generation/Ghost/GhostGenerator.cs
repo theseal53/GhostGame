@@ -5,23 +5,61 @@ using UnityEngine;
 public class GhostGenerator
 {
 
-	public float slowSpeed = 1;
-	public float mediumSpeed = 3;
-	public float fastSpeed = 10;
+	private List<GhostPersonalityInstaller> personalityInstallers = new List<GhostPersonalityInstaller>()
+	{
+			new PlayerProximityPI(),
+			new SummonTimeoutPI(),
+			new AppeaseTimeoutPI(),
+			new BanishTimeoutPI()
+	};
+	private List<float> PIChances = new List<float>()
+	{
+		.1f,
+		.1f,
+		.1f,
+		.1f
+	};
 
 	public Ghost GenerateGhost(Board board)
 	{
 		Ghost ghost = Object.Instantiate(PrefabRegistry.I.ghost).GetComponent<Ghost>();
-		ghost.speed = RandomSpeed();
+		ghost.Init(0);
+		ghost.nameSet = RandomName.Generate();
+
 		ghost.summonRoom = RandomRoom(board);
 		ghost.summonPosition = FindSummonPosition(ghost.summonRoom);
-		ghost.summonCondition = RandomSummonCondition(ghost);
+
+		InstallRandomPersonality(ghost);
 
 		return ghost;
 	}
 
-	private float RandomSpeed()
+	private void InstallRandomPersonality(Ghost ghost)
 	{
+		int maxAttempts = 100;
+		int currentAttempts = 0;
+		while (!ghost.PersonalityIsComplete())
+		{
+			if (personalityInstallers.Count == 0)
+			{
+				throw new System.Exception("Ran out of GhostPersonalityInstallers");
+			}
+			GhostPersonalityInstaller personalityInstaller = WeightedChoice.Choose(personalityInstallers, PIChances);
+			personalityInstaller.InstallPersonality(ghost);
+			if (maxAttempts <= currentAttempts)
+			{
+				throw new System.Exception("Installing personality took too long");
+			}
+			++currentAttempts;
+		}
+
+	}
+
+	/*private float RandomSpeed()
+	{
+		float slowSpeed = 1;
+		float mediumSpeed = 3;
+		float fastSpeed = 10;
 		int rng = Random.Range(0, 3);
 		switch(rng)
 		{
@@ -32,19 +70,14 @@ public class GhostGenerator
 			default:
 				return fastSpeed;
 		}
-	}
+	}*/
 	private Room RandomRoom(Board board)
 	{
-		int rng = Random.Range(0, board.rooms.Count);
-		return board.rooms[rng];
+		int rng = Random.Range(0, board.stories[0].rooms.Count);
+		return board.stories[0].rooms[rng];
 	}
 	private Vector2 FindSummonPosition(Room room)
 	{
 		return new Vector2(room.x + room.width / 2, room.y + room.height / 2);
-	}
-
-	private GhostSummonCondition RandomSummonCondition(Ghost ghost)
-	{
-		return new TimeoutSummonCondition(ghost);
 	}
 }

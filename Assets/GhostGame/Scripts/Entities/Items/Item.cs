@@ -29,4 +29,11 @@ public class Item : Entity
 	{
 		//To be overriden
 	}
+
+	protected override void SortIntoParent()
+	{
+		transform.SetParent(PrefabRegistry.I.itemsContainers[storyLocation].transform);
+	}
+
+
 }

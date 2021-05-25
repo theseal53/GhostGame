@@ -5,40 +5,51 @@ using UnityEngine.Tilemaps;
 
 public class TileInstantiator
 {
-    public void InstantiateTiles(short[,] tiles, TilePosition[,] tilePositions)
+    public void InstantiateTiles(sbyte[][][] tiles, TilePosition[][][] tilePositions)
     {
+        int stories = tilePositions.Length;
+        int rows = tilePositions[0].Length;
+        int columns = tilePositions[0][0].Length;
 
-        for (int i = 0; i < tilePositions.GetLength(0); ++i)
+        for (int i = 0; i < stories; ++i)
         {
-            for (int j = 0; j < tilePositions.GetLength(1); j++)
+            for (int j = 0; j < rows; j++)
             {
-                if (tilePositions[i,j] == TilePosition.Wall)
-				{
-                    InstantiateWall(j, i);
-				}
-                else if (tilePositions[i,j] != TilePosition.Empty)
+                for (int k = 0; k < columns; ++k)
                 {
-                    //Room room = board.rooms[board.tiles[i][j]];
-                    //TileSet tileSet = room.TileSet;
-                    TileSet tileSet = TileSetRegistry.I.GetTileSet((RoomCode)tiles[i,j]);
-                    Tile[] positionalSet = tileSet.getPositionalSet(tilePositions[i,j]);
-                    InstantiateFromArray(positionalSet, j, i);
+                    if (tiles[i][j][k] == Constants.EMPTY_CODE)
+					{
+                        if (tilePositions[i][j][k] != TilePosition.MidCenter)
+                        {
+                            TileCollection tileCollection = TileSetRegistry.I.GetWallTileCollection(i);
+                            Tile[] positionalSet = tileCollection.getPositionalSet(tilePositions[i][j][k]);
+                            InstantiateWall(positionalSet, i, k, j);
+                        }
+                    }
+                    else
+					{
+                        TileCollection tileCollection = TileSetRegistry.I.GetTileSet((RoomCode)tiles[i][j][k]).TileCollection;
+                        Tile[] positionalSet = tileCollection.getPositionalSet(tilePositions[i][j][k]);
+                        InstantiateFloor(positionalSet, i, k, j);
+                    }
                 }
             }
         }
     }
 
-    void InstantiateWall(int xCoord, int yCoord)
-	{
+    void InstantiateWall(Tile[] prefabs, int story, int xCoord, int yCoord)
+    {
+        int randomIndex = Random.Range(0, prefabs.Length);
+
         Vector3Int position = new Vector3Int(xCoord, yCoord, 0);
-        TileSetRegistry.I.wallTilemap.SetTile(position, TileSetRegistry.I.wall);
+        TileSetRegistry.I.wallTilemaps[story].SetTile(position, prefabs[randomIndex]);
     }
 
-    void InstantiateFromArray(Tile[] prefabs, int xCoord, int yCoord)
+    void InstantiateFloor(Tile[] prefabs, int story, int xCoord, int yCoord)
     {
-        int randomIndex = UnityEngine.Random.Range(0, prefabs.Length);
+        int randomIndex = Random.Range(0, prefabs.Length);
 
         Vector3Int position = new Vector3Int(xCoord, yCoord, 0);
-        TileSetRegistry.I.floorTilemap.SetTile(position, prefabs[randomIndex]);
+        TileSetRegistry.I.floorTilemaps[story].SetTile(position, prefabs[randomIndex]);
     }
 }
