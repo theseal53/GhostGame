@@ -10,12 +10,18 @@ public abstract class Entity : NetworkBehaviour
 	[SyncVar]
 	public int storyLocation;
 	protected SpriteRenderer spriteRenderer;
+	string outlineShaderName = "_UseOutline";
+	int outlineShaderPropertyID;
+	string isPrimaryShaderName = "_IsPrimaryTarget";
+	int isPrimaryShaderPropertyID;
 
 	private Rigidbody2D rb2D;
 
 	public virtual void Init(int storyLocation)
 	{
 		this.storyLocation = storyLocation;
+		
+		
 	}
 
 	protected virtual void Start()
@@ -24,6 +30,44 @@ public abstract class Entity : NetworkBehaviour
 		rb2D = GetComponent<Rigidbody2D>();
 		SortIntoParent();
 		UpdateLayering();
+		outlineShaderPropertyID = Shader.PropertyToID(outlineShaderName);
+		isPrimaryShaderPropertyID = Shader.PropertyToID(isPrimaryShaderName);
+	}
+
+	public void NotifyInteractionRadiusChange(bool isInside)
+	{
+		if (IsInteractable() && isInside)
+		{
+			SetShaderOutlineEnabled(true);
+		}
+		else
+		{
+			SetShaderOutlineEnabled(false);
+		}
+	}
+
+	public void NotifyIsPrimaryTarget(bool isPrimaryTarget)
+	{
+		if (IsInteractable())
+		{
+			SetShaderIsPrimaryTarget(isPrimaryTarget);
+		}
+	}
+
+	void SetShaderOutlineEnabled(bool enabled)
+	{
+		if (spriteRenderer)
+		{
+			spriteRenderer.material.SetFloat(outlineShaderPropertyID, (enabled ? 1 : 0));
+		}
+	}
+
+	void SetShaderIsPrimaryTarget(bool isPrimaryTarget)
+	{
+		if (spriteRenderer)
+		{
+			spriteRenderer.material.SetFloat(isPrimaryShaderPropertyID, (isPrimaryTarget ? 1 : 0));
+		}
 	}
 
 	public virtual bool IsInteractable()

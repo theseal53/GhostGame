@@ -113,12 +113,12 @@ public class Ghost : Mob
 
 	public void AppeasedTransitionState()
 	{
-		print("I am appeased");
+		//print("I am appeased");
 	}
 
 	public void BanishedTransitionState()
 	{
-		print("I am banished");
+		//print("I am banished");
 	}
 
 /////////Other functions
@@ -126,7 +126,7 @@ public class Ghost : Mob
 
 	public void Summon()
 	{
-		print("I am summoned!");
+		//print("I am summoned!");
 		transform.position = summonPosition;
 	}
 

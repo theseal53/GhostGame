@@ -88,6 +88,7 @@
     <Compile Include="Assets\GhostGame\Scripts\Entities\Ghost\GhostTransitionConditions\TimeoutTC.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Items\Crucifix.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Items\Item.cs" />
+    <Compile Include="Assets\GhostGame\Scripts\Entities\Mobs\Character\InteractionRadius.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Mobs\Character\PlayerCharacter.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Entities\Mobs\Mob.cs" />
     <Compile Include="Assets\GhostGame\Scripts\Generation\BoardDataGenerator.cs" />
@@ -183,7 +184,9 @@
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\Mirror\Plugins\Mono.Cecil\License.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
+    <None Include="Assets\GhostGame\Shaders\TestOutline.shader" />
     <None Include="Assets\test.txt" />
+    <None Include="Assets\GhostGame\Shaders\Sprite-Lit-Outlined.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF Overlay.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Fonts\LiberationSans - OFL.txt" />

@@ -12,16 +12,19 @@ public class PlayerCharacter : Mob
 	public Light2D visibleLight;
 	public Light2D lineOfSightLight;
 
+	public InteractionRadius interactionRadius;
+
 	public SortingGroup sortingGroup;
 
 	[Header("Movement/Interaction")]
 	public float moveSpeed = 10;
-	public float interactRadius = 2;
 
 	float horizontalMove = 0f;
 	float verticalMove = 0f;
 
 	public Item heldItem;
+
+	Entity primaryFocusTarget;
 
 	// Update is called once per frame
 
@@ -29,6 +32,8 @@ public class PlayerCharacter : Mob
 	{
 		visibleLight.gameObject.SetActive(true);
 		lineOfSightLight.gameObject.SetActive(true);
+		interactionRadius.OnRadiusEnter += OnInteractionRadiusEnter;
+		interactionRadius.OnRadiusExit += OnInteractionRadiusExit;
 		base.OnStopAuthority();
 	}
 
@@ -57,7 +62,33 @@ public class PlayerCharacter : Mob
 		// Move our character
 		Vector2 move = new Vector2(horizontalMove * moveSpeed * Time.fixedDeltaTime, verticalMove * moveSpeed * Time.fixedDeltaTime);
 		Move(move);
+		UpdatePrimaryTarget();		
+	}
 
+	void UpdatePrimaryTarget()
+	{
+		primaryFocusTarget = ChooseInteractionEntity(interactionRadius.colliderList);
+		foreach (Entity entity in interactionRadius.colliderList)
+		{
+			entity.NotifyIsPrimaryTarget(entity == primaryFocusTarget);
+		}
+	}
+
+	Entity ChooseInteractionEntity(List<Entity> availableEntities)
+	{
+		Entity bestOption = null;
+		if (availableEntities.Count > 0)
+		{
+			foreach (Entity entity in availableEntities)
+			{
+				if (entity.IsInteractable() && entity != this)
+				{
+					bestOption = entity;
+					break;
+				}
+			}
+		}
+		return bestOption;
 	}
 
 	[Command]
@@ -70,36 +101,11 @@ public class PlayerCharacter : Mob
 	[Command]
 	void CmdAttemptInteraction()
 	{
-		Collider2D[] proximityObjects = Physics2D.OverlapCircleAll(transform.position, interactRadius, 1 << (int)Layering.StoryToPhysicsLayer(storyLocation));
-		HashSet<Entity> availableEntities = new HashSet<Entity>();
-		foreach(Collider2D collider in proximityObjects)
+		if (primaryFocusTarget != null && primaryFocusTarget.IsInteractable())
 		{
-			Entity entity = collider.GetComponent<Entity>();
-			if (entity != null)
-			{
-				
-
-				if (entity.IsInteractable())
-				{
-					print(entity.gameObject);
-					availableEntities.Add(entity);
-				}
-			}
+			print("Interacting");
+			primaryFocusTarget.Interact(this);
 		}
-		if (availableEntities.Count == 0)
-		{
-			return;
-		}
-		else
-		{
-			Entity targetEntity = ChooseInteractionEntity(availableEntities);
-			targetEntity.Interact(this);
-		}
-	}
-
-	Entity ChooseInteractionEntity(HashSet<Entity> availableEntities)
-	{
-		return availableEntities.First();
 	}
 
 
@@ -143,6 +149,19 @@ public class PlayerCharacter : Mob
 		sortingGroup.sortingLayerID = Layering.StoryToSortingLayerID(storyLocation);
 		sortingGroup.sortingOrder = Constants.ENTITY_SORTING_ORDER;
 		visibleLight.m_ApplyToSortingLayers = new int[] { Layering.StoryToSortingLayerID(storyLocation) };
+		interactionRadius.gameObject.layer = (int)Layering.StoryToPhysicsLayer(storyLocation);
+	}
+
+	void OnInteractionRadiusEnter(Collider2D other)
+	{
+		Entity otherEntity = other.GetComponent<Entity>();
+		otherEntity?.NotifyInteractionRadiusChange(true);
+	}
+
+	void OnInteractionRadiusExit(Collider2D other)
+	{
+		Entity otherEntity = other.GetComponent<Entity>();
+		otherEntity?.NotifyInteractionRadiusChange(false);
 	}
 
 }
